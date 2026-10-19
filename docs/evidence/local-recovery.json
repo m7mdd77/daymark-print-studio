@@ -1,0 +1,971 @@
+{
+  "verifiedAt": "2026-10-19T07:44:28.930Z",
+  "scope": "Actual local Wednesday: independent Finance caught up the prior printed-but-uninvoiced job; new invoices remain unpaid. Sales duplicate escalation was refused.",
+  "state": {
+    "version": 36,
+    "day": 3,
+    "closed": false,
+    "cash": 119500,
+    "revenue": 96000,
+    "cost": 34500,
+    "stock": {
+      "standard": 100,
+      "premium": 200
+    },
+    "stockValue": {
+      "standard": 4000,
+      "premium": 20000
+    },
+    "pressUsed": 0,
+    "orders": [
+      {
+        "id": "D101",
+        "customer": "Morrow Coffee",
+        "product": "Window posters",
+        "quantity": 80,
+        "paper": "standard",
+        "price": 24000,
+        "due": 0,
+        "status": "printed",
+        "invoice": true,
+        "paid": true,
+        "actualCost": 6500,
+        "printedDay": 0
+      },
+      {
+        "id": "D102",
+        "customer": "Northside Gallery",
+        "product": "Opening invitations",
+        "quantity": 100,
+        "paper": "premium",
+        "price": 36000,
+        "due": 1,
+        "status": "printed",
+        "invoice": true,
+        "paid": false,
+        "actualCost": 18000,
+        "printedDay": 1
+      },
+      {
+        "id": "D103",
+        "customer": "Field Notes Club",
+        "product": "Meet-up programmes",
+        "quantity": 60,
+        "paper": "standard",
+        "price": 18000,
+        "due": 2,
+        "status": "printed",
+        "invoice": true,
+        "paid": false,
+        "actualCost": 5000,
+        "printedDay": 2
+      },
+      {
+        "id": "D201",
+        "customer": "Sunday Market",
+        "product": "Market flyers",
+        "quantity": 60,
+        "paper": "standard",
+        "due": 2,
+        "status": "printed",
+        "price": 18000,
+        "invoice": true,
+        "paid": false,
+        "actualCost": 5000,
+        "printedDay": 2
+      },
+      {
+        "id": "D202",
+        "customer": "Mosaic Festival",
+        "product": "Revised standard art cards",
+        "quantity": 60,
+        "paper": "standard",
+        "price": 24000,
+        "due": 3,
+        "status": "queued",
+        "invoice": false,
+        "paid": false,
+        "ownerApproved": true
+      }
+    ],
+    "leads": [
+      {
+        "id": "L201",
+        "customer": "Sunday Market",
+        "product": "Market flyers",
+        "quantity": 60,
+        "paper": "standard",
+        "offer": 18000,
+        "due": 2,
+        "status": "accepted"
+      },
+      {
+        "id": "L202",
+        "customer": "Mosaic Festival",
+        "product": "Rush art cards",
+        "quantity": 120,
+        "paper": "premium",
+        "offer": 9000,
+        "due": 0,
+        "status": "revised"
+      }
+    ],
+    "shipments": [
+      {
+        "id": "S1",
+        "paper": "premium",
+        "quantity": 200,
+        "eta": 3,
+        "received": true,
+        "paid": true,
+        "cost": 20000
+      },
+      {
+        "id": "X2",
+        "paper": "premium",
+        "quantity": 80,
+        "eta": 1,
+        "cost": 12000,
+        "received": true,
+        "paid": true,
+        "express": true
+      }
+    ],
+    "inbox": [
+      {
+        "id": "H1",
+        "leadId": "L202",
+        "from": "sales",
+        "reason": "Same-day due date cannot be accepted; needs owner review for a feasible rush commitment.",
+        "status": "resolved",
+        "day": 0,
+        "choice": "revised_quote"
+      },
+      {
+        "id": "H2",
+        "leadId": null,
+        "from": "finance",
+        "reason": "This role could not complete its reading. Its proposed work was not applied. Review the day before continuing.",
+        "status": "resolved",
+        "day": 1,
+        "choice": "acknowledge"
+      }
+    ],
+    "health": {
+      "sales": "ready",
+      "production": "ready",
+      "finance": "ready"
+    },
+    "rejections": [
+      {
+        "role": "sales",
+        "leadId": "L202",
+        "code": "state",
+        "reason": "This enquiry is already resolved.",
+        "day": 2,
+        "injected": false
+      }
+    ],
+    "decisions": [
+      {
+        "role": "sales",
+        "day": 0,
+        "reason": "L201 has a healthy 25%+ margin and a feasible 2-day due date. L202 is due today, which violates the no same-day acceptance rule and must be escalated.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 609,
+          "outputTokens": 456,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "production",
+        "day": 0,
+        "reason": "D101 is due today (80 standard, fits capacity). D102 is due tomorrow but only 20 premium are in stock; buying the 80-unit deficit via express (80×150=12000 cents) stays under the 15000-cent authority and preserves the 30000 cash reserve. D103 cannot fit today after D101.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 915,
+          "outputTokens": 2600,
+          "cacheReadTokens": 640
+        }
+      },
+      {
+        "role": "finance",
+        "day": 0,
+        "reason": "D101 is the only printed order, so invoice it for its recorded 24,000 and collect the resulting issued unpaid invoice. D102/D103/D201 are still queued and cannot be invoiced. L202 is already held with an open owner inbox entry for the same-day promise, so no duplicate escalation.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 769,
+          "outputTokens": 1015,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "sales",
+        "day": 1,
+        "reason": "L201 is already accepted and D101–D103/D201–D202 cover existing approved work. L202 remains same-day and cannot be accepted; its earlier escalation was resolved with an owner-approved revision (D202). No duplicate lead, order, or owner request is warranted, so wait.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 943,
+          "outputTokens": 2241,
+          "cacheReadTokens": 640
+        }
+      },
+      {
+        "role": "production",
+        "day": 1,
+        "reason": "D102 (100 premium sheets) is due tomorrow and premium stock of 100 is sufficient, so no express purchase is needed. Printing it uses 100 of today's 120-sheet capacity; standard queued work can follow on later days within their deadlines.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 866,
+          "outputTokens": 533,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "sales",
+        "day": 2,
+        "reason": "L202 still carries a same-day due date (day 0), which cannot be accepted; D202 already covers the owner-approved revised 60-card standard job. L201 is already accepted with D201 queued, so no duplicate acceptance. Escalating the impossible rush lead.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1071,
+          "outputTokens": 2046,
+          "cacheReadTokens": 640
+        }
+      },
+      {
+        "role": "production",
+        "day": 2,
+        "reason": "Day 2: capacity 120, press free. D103 (60 std) and D201 (60 std) are due today; stock 220 standard covers them (120 needed). No premium work queued, so no deficit and no express buy. D202 (due day 3) can run tomorrow with remaining standard stock.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 962,
+          "outputTokens": 632,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "finance",
+        "day": 2,
+        "reason": "Reconciled day 2: D101 is already invoiced and paid. D102, D103 and D201 are printed with no invoice, so issue those invoices; there are no issued-but-unpaid invoices to collect. D202 remains queued. L202 was already held/escalated, so no duplicate owner request.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1171,
+          "outputTokens": 2692,
+          "cacheReadTokens": 768
+        }
+      }
+    ],
+    "daySummaries": [
+      {
+        "day": 0,
+        "cash": 128700,
+        "revenue": 24000,
+        "cost": 6500,
+        "profit": 17500,
+        "backlog": 3,
+        "printed": 1,
+        "onTime": 1,
+        "capacity": 40
+      },
+      {
+        "day": 1,
+        "cash": 124700,
+        "revenue": 24000,
+        "cost": 24500,
+        "profit": 17500,
+        "backlog": 3,
+        "printed": 2,
+        "onTime": 2,
+        "capacity": 20
+      },
+      {
+        "day": 2,
+        "cash": 119500,
+        "revenue": 96000,
+        "cost": 34500,
+        "profit": 61500,
+        "backlog": 1,
+        "printed": 4,
+        "onTime": 4,
+        "capacity": 0
+      }
+    ],
+    "scenario": "paper-delay"
+  },
+  "events": [
+    {
+      "seq": 1,
+      "day": 0,
+      "actor": "system",
+      "type": "scenario",
+      "payload": {
+        "name": "paper-delay"
+      },
+      "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "33f7b49fa325a425bcff87b5048a4ac596111929ccb6da15b44680ed144173a8"
+    },
+    {
+      "seq": 2,
+      "day": 0,
+      "actor": "sales",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "33f7b49fa325a425bcff87b5048a4ac596111929ccb6da15b44680ed144173a8",
+      "hash": "d722e962b111277fb9a5971a505c41a4e822dfe92d02d99c6657b589041c2102"
+    },
+    {
+      "seq": 3,
+      "day": 0,
+      "actor": "sales",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "accept_lead",
+          "leadId": "L201",
+          "price": 18000
+        }
+      },
+      "previousHash": "d722e962b111277fb9a5971a505c41a4e822dfe92d02d99c6657b589041c2102",
+      "hash": "8d7d51eb11cb86d38713399e37e1bfd94146ad01715a336cf95032696d3b3c7a"
+    },
+    {
+      "seq": 4,
+      "day": 0,
+      "actor": "sales",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "escalate",
+          "leadId": "L202",
+          "reason": "Same-day due date cannot be accepted; needs owner review for a feasible rush commitment."
+        }
+      },
+      "previousHash": "8d7d51eb11cb86d38713399e37e1bfd94146ad01715a336cf95032696d3b3c7a",
+      "hash": "592892b3bec46a460da21c8e16a382db4089af149f4c6c6c7ed3529196a9ed9b"
+    },
+    {
+      "seq": 5,
+      "day": 0,
+      "actor": "sales",
+      "type": "role_finished",
+      "payload": {
+        "reason": "L201 has a healthy 25%+ margin and a feasible 2-day due date. L202 is due today, which violates the no same-day acceptance rule and must be escalated.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 609,
+          "outputTokens": 456,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "592892b3bec46a460da21c8e16a382db4089af149f4c6c6c7ed3529196a9ed9b",
+      "hash": "476a7ff389bb2a0341d9fb4954626a45931a47bf6c1f1b06e39d2353d5678f51"
+    },
+    {
+      "seq": 6,
+      "day": 0,
+      "actor": "production",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "476a7ff389bb2a0341d9fb4954626a45931a47bf6c1f1b06e39d2353d5678f51",
+      "hash": "f4faa6b21f89a2ae848f35de7c2134c74d34d972dc98c2bb3db0f27dd954a798"
+    },
+    {
+      "seq": 7,
+      "day": 0,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "buy_express",
+          "paper": "premium",
+          "quantity": 80
+        }
+      },
+      "previousHash": "f4faa6b21f89a2ae848f35de7c2134c74d34d972dc98c2bb3db0f27dd954a798",
+      "hash": "9a4bd40c17e27d85a2fb534722353006b2351423a94dad129d647f9fa5a9c566"
+    },
+    {
+      "seq": 8,
+      "day": 0,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "print",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "9a4bd40c17e27d85a2fb534722353006b2351423a94dad129d647f9fa5a9c566",
+      "hash": "93657ce0b9dd4038786d4c8367aa235ebbe94af9ba6a9e072cde45755d081ae0"
+    },
+    {
+      "seq": 9,
+      "day": 0,
+      "actor": "production",
+      "type": "role_finished",
+      "payload": {
+        "reason": "D101 is due today (80 standard, fits capacity). D102 is due tomorrow but only 20 premium are in stock; buying the 80-unit deficit via express (80×150=12000 cents) stays under the 15000-cent authority and preserves the 30000 cash reserve. D103 cannot fit today after D101.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 915,
+          "outputTokens": 2600,
+          "cacheReadTokens": 640
+        }
+      },
+      "previousHash": "93657ce0b9dd4038786d4c8367aa235ebbe94af9ba6a9e072cde45755d081ae0",
+      "hash": "0d7a9c892d02b6ba77b71b0ce6aac633abbc01c02740939322ee30b9d3c7bf60"
+    },
+    {
+      "seq": 10,
+      "day": 0,
+      "actor": "finance",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "0d7a9c892d02b6ba77b71b0ce6aac633abbc01c02740939322ee30b9d3c7bf60",
+      "hash": "00e803bda36de226207c0e8ef78b40a23c15383df4b6984268bc342420539035"
+    },
+    {
+      "seq": 11,
+      "day": 0,
+      "actor": "finance",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "invoice",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "00e803bda36de226207c0e8ef78b40a23c15383df4b6984268bc342420539035",
+      "hash": "23464b06110985e78b0a8cc50b4021a87b88166ccdf360fe9b66246e9491cb0f"
+    },
+    {
+      "seq": 12,
+      "day": 0,
+      "actor": "finance",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "collect",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "23464b06110985e78b0a8cc50b4021a87b88166ccdf360fe9b66246e9491cb0f",
+      "hash": "c9fcf8c79544c71ca1354799b1fead7da96159cc342908278041004e6534affe"
+    },
+    {
+      "seq": 13,
+      "day": 0,
+      "actor": "finance",
+      "type": "role_finished",
+      "payload": {
+        "reason": "D101 is the only printed order, so invoice it for its recorded 24,000 and collect the resulting issued unpaid invoice. D102/D103/D201 are still queued and cannot be invoiced. L202 is already held with an open owner inbox entry for the same-day promise, so no duplicate escalation.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 769,
+          "outputTokens": 1015,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "c9fcf8c79544c71ca1354799b1fead7da96159cc342908278041004e6534affe",
+      "hash": "d0fd42cf7d834f09a469ee44b6823b94016e544f1a97bdc805b43cac442cd567"
+    },
+    {
+      "seq": 14,
+      "day": 0,
+      "actor": "system",
+      "type": "day_closed",
+      "payload": {},
+      "previousHash": "d0fd42cf7d834f09a469ee44b6823b94016e544f1a97bdc805b43cac442cd567",
+      "hash": "5aafc377fc574c6a4da577283d2b4ca1bf9ad1b86ca952c765ce6c9addb0bfcb"
+    },
+    {
+      "seq": 15,
+      "day": 1,
+      "actor": "owner",
+      "type": "owner_decision",
+      "payload": {
+        "id": "H1",
+        "choice": "revised_quote"
+      },
+      "previousHash": "5aafc377fc574c6a4da577283d2b4ca1bf9ad1b86ca952c765ce6c9addb0bfcb",
+      "hash": "30197463973b17ed953e5b24f21a518bef84981008824c1345761081950a3f95"
+    },
+    {
+      "seq": 16,
+      "day": 1,
+      "actor": "sales",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "30197463973b17ed953e5b24f21a518bef84981008824c1345761081950a3f95",
+      "hash": "630691ec9293aca0a0d11c9f352908d315049d8b8101d073752be67d1b1f20bd"
+    },
+    {
+      "seq": 17,
+      "day": 1,
+      "actor": "sales",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "wait"
+        }
+      },
+      "previousHash": "630691ec9293aca0a0d11c9f352908d315049d8b8101d073752be67d1b1f20bd",
+      "hash": "0da722a7855e609ee43bd5324ce7aecdbed561b0bc6d298bb40ae1334ca78aaf"
+    },
+    {
+      "seq": 18,
+      "day": 1,
+      "actor": "sales",
+      "type": "role_finished",
+      "payload": {
+        "reason": "L201 is already accepted and D101–D103/D201–D202 cover existing approved work. L202 remains same-day and cannot be accepted; its earlier escalation was resolved with an owner-approved revision (D202). No duplicate lead, order, or owner request is warranted, so wait.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 943,
+          "outputTokens": 2241,
+          "cacheReadTokens": 640
+        }
+      },
+      "previousHash": "0da722a7855e609ee43bd5324ce7aecdbed561b0bc6d298bb40ae1334ca78aaf",
+      "hash": "712a7be6349c27a13bda1c8015c6b6ee1b2ee5311779060b3dd9320aad2448f7"
+    },
+    {
+      "seq": 19,
+      "day": 1,
+      "actor": "production",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "712a7be6349c27a13bda1c8015c6b6ee1b2ee5311779060b3dd9320aad2448f7",
+      "hash": "f8ddde9a6fdff9cc03699ca5ef0cda77b4d5d6130447ab43db7ba932948c024f"
+    },
+    {
+      "seq": 20,
+      "day": 1,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "print",
+          "orderIds": [
+            "D102"
+          ]
+        }
+      },
+      "previousHash": "f8ddde9a6fdff9cc03699ca5ef0cda77b4d5d6130447ab43db7ba932948c024f",
+      "hash": "1b277556640b473f04d15d328c7facdbb347b3753ae61e2683cb68d6de010b59"
+    },
+    {
+      "seq": 21,
+      "day": 1,
+      "actor": "production",
+      "type": "role_finished",
+      "payload": {
+        "reason": "D102 (100 premium sheets) is due tomorrow and premium stock of 100 is sufficient, so no express purchase is needed. Printing it uses 100 of today's 120-sheet capacity; standard queued work can follow on later days within their deadlines.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 866,
+          "outputTokens": 533,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "1b277556640b473f04d15d328c7facdbb347b3753ae61e2683cb68d6de010b59",
+      "hash": "6492a3aa931676f1009b86c4b08fbd0885257b8733c79563fa3041b59371c874"
+    },
+    {
+      "seq": 22,
+      "day": 1,
+      "actor": "finance",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "6492a3aa931676f1009b86c4b08fbd0885257b8733c79563fa3041b59371c874",
+      "hash": "58a6a424087d33609d0a7c644dd1f061f5a5fd0a7b11f0eb98c6a178801bec25"
+    },
+    {
+      "seq": 23,
+      "day": 1,
+      "actor": "finance",
+      "type": "role_failed",
+      "payload": {},
+      "previousHash": "58a6a424087d33609d0a7c644dd1f061f5a5fd0a7b11f0eb98c6a178801bec25",
+      "hash": "260d6efd7775747fae3507c947c63e45259b31922705b18ee7fce92e001761b1"
+    },
+    {
+      "seq": 24,
+      "day": 1,
+      "actor": "system",
+      "type": "day_closed",
+      "payload": {},
+      "previousHash": "260d6efd7775747fae3507c947c63e45259b31922705b18ee7fce92e001761b1",
+      "hash": "651e23aa810d587f0bb6feff01b8be02db32335a46cfa62bcdcfcb83a3f0d17c"
+    },
+    {
+      "seq": 25,
+      "day": 2,
+      "actor": "owner",
+      "type": "owner_decision",
+      "payload": {
+        "id": "H2",
+        "choice": "acknowledge"
+      },
+      "previousHash": "651e23aa810d587f0bb6feff01b8be02db32335a46cfa62bcdcfcb83a3f0d17c",
+      "hash": "e7a03f238ef1b30c6ae48676a32446479b8e722f179200786488733f7d779a47"
+    },
+    {
+      "seq": 26,
+      "day": 2,
+      "actor": "sales",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "e7a03f238ef1b30c6ae48676a32446479b8e722f179200786488733f7d779a47",
+      "hash": "8b96db5f609efbe07a234a956400e228190d765a16232edd3354b5670c542829"
+    },
+    {
+      "seq": 27,
+      "day": 2,
+      "actor": "sales",
+      "type": "rejected",
+      "payload": {
+        "action": {
+          "type": "escalate",
+          "leadId": "L202",
+          "reason": "Same-day rush (due day 0) is not feasible; needs owner review for a feasible commitment. Existing D202 covers the approved revised standard art-card order."
+        },
+        "code": "state",
+        "reason": "This enquiry is already resolved.",
+        "injected": false
+      },
+      "previousHash": "8b96db5f609efbe07a234a956400e228190d765a16232edd3354b5670c542829",
+      "hash": "f8525fe5945551092a147684d49266087754e7574b7deef9dc976b750706e489"
+    },
+    {
+      "seq": 28,
+      "day": 2,
+      "actor": "sales",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "wait"
+        }
+      },
+      "previousHash": "f8525fe5945551092a147684d49266087754e7574b7deef9dc976b750706e489",
+      "hash": "0a4015f18188ede90cc5995a829f35f0c31ac514330375a2cb76fa734a782c32"
+    },
+    {
+      "seq": 29,
+      "day": 2,
+      "actor": "sales",
+      "type": "role_finished",
+      "payload": {
+        "reason": "L202 still carries a same-day due date (day 0), which cannot be accepted; D202 already covers the owner-approved revised 60-card standard job. L201 is already accepted with D201 queued, so no duplicate acceptance. Escalating the impossible rush lead.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1071,
+          "outputTokens": 2046,
+          "cacheReadTokens": 640
+        }
+      },
+      "previousHash": "0a4015f18188ede90cc5995a829f35f0c31ac514330375a2cb76fa734a782c32",
+      "hash": "f69ad573d2ccf1643de4319fd367fa53fb55c61f3ebee6f192d5e7a2a946c50b"
+    },
+    {
+      "seq": 30,
+      "day": 2,
+      "actor": "production",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "f69ad573d2ccf1643de4319fd367fa53fb55c61f3ebee6f192d5e7a2a946c50b",
+      "hash": "8b15132f5312fdf042841cf401e5f6f6b18da45c4c437cc9ec38707f357d0466"
+    },
+    {
+      "seq": 31,
+      "day": 2,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "print",
+          "orderIds": [
+            "D103",
+            "D201"
+          ]
+        }
+      },
+      "previousHash": "8b15132f5312fdf042841cf401e5f6f6b18da45c4c437cc9ec38707f357d0466",
+      "hash": "83e77ca4ce6e2e5d497fdf6cb29009bd4d6cd011ab3c0b1eb16b32dfd5af0047"
+    },
+    {
+      "seq": 32,
+      "day": 2,
+      "actor": "production",
+      "type": "role_finished",
+      "payload": {
+        "reason": "Day 2: capacity 120, press free. D103 (60 std) and D201 (60 std) are due today; stock 220 standard covers them (120 needed). No premium work queued, so no deficit and no express buy. D202 (due day 3) can run tomorrow with remaining standard stock.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 962,
+          "outputTokens": 632,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "83e77ca4ce6e2e5d497fdf6cb29009bd4d6cd011ab3c0b1eb16b32dfd5af0047",
+      "hash": "a68e2a2be1cb4410bdc5e1a2e2161b680e18753c49c35b7df928ac5f885665dc"
+    },
+    {
+      "seq": 33,
+      "day": 2,
+      "actor": "finance",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "a68e2a2be1cb4410bdc5e1a2e2161b680e18753c49c35b7df928ac5f885665dc",
+      "hash": "bd08b6adadc7da2574f7166834cfa85f41fa5e3b9c5ba7ced7fa2b9bc5af180c"
+    },
+    {
+      "seq": 34,
+      "day": 2,
+      "actor": "finance",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "invoice",
+          "orderIds": [
+            "D102",
+            "D103",
+            "D201"
+          ]
+        }
+      },
+      "previousHash": "bd08b6adadc7da2574f7166834cfa85f41fa5e3b9c5ba7ced7fa2b9bc5af180c",
+      "hash": "99e7286a0446a3ffddd2502b374e89406c1f3b683790dc865c230f4d050e17f7"
+    },
+    {
+      "seq": 35,
+      "day": 2,
+      "actor": "finance",
+      "type": "role_finished",
+      "payload": {
+        "reason": "Reconciled day 2: D101 is already invoiced and paid. D102, D103 and D201 are printed with no invoice, so issue those invoices; there are no issued-but-unpaid invoices to collect. D202 remains queued. L202 was already held/escalated, so no duplicate owner request.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1171,
+          "outputTokens": 2692,
+          "cacheReadTokens": 768
+        }
+      },
+      "previousHash": "99e7286a0446a3ffddd2502b374e89406c1f3b683790dc865c230f4d050e17f7",
+      "hash": "3c99565064070eb3bbee4759779627641fed5d9663a3345556aff3e74ed0db30"
+    },
+    {
+      "seq": 36,
+      "day": 2,
+      "actor": "system",
+      "type": "day_closed",
+      "payload": {},
+      "previousHash": "3c99565064070eb3bbee4759779627641fed5d9663a3345556aff3e74ed0db30",
+      "hash": "b3c56b286b6c610c216f35914e4123ace0131ed8d69fcf4abd5e9819b648df73"
+    }
+  ],
+  "traces": [
+    {
+      "role": "sales",
+      "day": 0,
+      "version": 2,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 609,
+        "outputTokens": 456,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "L201 has a healthy 25%+ margin and a feasible 2-day due date. L202 is due today, which violates the no same-day acceptance rule and must be escalated.",
+        "actions": [
+          {
+            "type": "accept_lead",
+            "leadId": "L201",
+            "price": 18000
+          },
+          {
+            "type": "escalate",
+            "leadId": "L202",
+            "reason": "Same-day due date cannot be accepted; needs owner review for a feasible rush commitment."
+          }
+        ]
+      }
+    },
+    {
+      "role": "production",
+      "day": 0,
+      "version": 6,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 915,
+        "outputTokens": 2600,
+        "cacheReadTokens": 640
+      },
+      "plan": {
+        "reason": "D101 is due today (80 standard, fits capacity). D102 is due tomorrow but only 20 premium are in stock; buying the 80-unit deficit via express (80×150=12000 cents) stays under the 15000-cent authority and preserves the 30000 cash reserve. D103 cannot fit today after D101.",
+        "actions": [
+          {
+            "type": "buy_express",
+            "paper": "premium",
+            "quantity": 80
+          },
+          {
+            "type": "print",
+            "orderIds": [
+              "D101"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "finance",
+      "day": 0,
+      "version": 10,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 769,
+        "outputTokens": 1015,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "D101 is the only printed order, so invoice it for its recorded 24,000 and collect the resulting issued unpaid invoice. D102/D103/D201 are still queued and cannot be invoiced. L202 is already held with an open owner inbox entry for the same-day promise, so no duplicate escalation.",
+        "actions": [
+          {
+            "type": "invoice",
+            "orderIds": [
+              "D101"
+            ]
+          },
+          {
+            "type": "collect",
+            "orderIds": [
+              "D101"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "sales",
+      "day": 1,
+      "version": 16,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 943,
+        "outputTokens": 2241,
+        "cacheReadTokens": 640
+      },
+      "plan": {
+        "reason": "L201 is already accepted and D101–D103/D201–D202 cover existing approved work. L202 remains same-day and cannot be accepted; its earlier escalation was resolved with an owner-approved revision (D202). No duplicate lead, order, or owner request is warranted, so wait.",
+        "actions": [
+          {
+            "type": "wait"
+          }
+        ]
+      }
+    },
+    {
+      "role": "production",
+      "day": 1,
+      "version": 19,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 866,
+        "outputTokens": 533,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "D102 (100 premium sheets) is due tomorrow and premium stock of 100 is sufficient, so no express purchase is needed. Printing it uses 100 of today's 120-sheet capacity; standard queued work can follow on later days within their deadlines.",
+        "actions": [
+          {
+            "type": "print",
+            "orderIds": [
+              "D102"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "sales",
+      "day": 2,
+      "version": 26,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 1071,
+        "outputTokens": 2046,
+        "cacheReadTokens": 640
+      },
+      "plan": {
+        "reason": "L202 still carries a same-day due date (day 0), which cannot be accepted; D202 already covers the owner-approved revised 60-card standard job. L201 is already accepted with D201 queued, so no duplicate acceptance. Escalating the impossible rush lead.",
+        "actions": [
+          {
+            "type": "escalate",
+            "leadId": "L202",
+            "reason": "Same-day rush (due day 0) is not feasible; needs owner review for a feasible commitment. Existing D202 covers the approved revised standard art-card order."
+          },
+          {
+            "type": "wait"
+          }
+        ]
+      }
+    },
+    {
+      "role": "production",
+      "day": 2,
+      "version": 30,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 962,
+        "outputTokens": 632,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "Day 2: capacity 120, press free. D103 (60 std) and D201 (60 std) are due today; stock 220 standard covers them (120 needed). No premium work queued, so no deficit and no express buy. D202 (due day 3) can run tomorrow with remaining standard stock.",
+        "actions": [
+          {
+            "type": "print",
+            "orderIds": [
+              "D103",
+              "D201"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "finance",
+      "day": 2,
+      "version": 33,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 1171,
+        "outputTokens": 2692,
+        "cacheReadTokens": 768
+      },
+      "plan": {
+        "reason": "Reconciled day 2: D101 is already invoiced and paid. D102, D103 and D201 are printed with no invoice, so issue those invoices; there are no issued-but-unpaid invoices to collect. D202 remains queued. L202 was already held/escalated, so no duplicate owner request.",
+        "actions": [
+          {
+            "type": "invoice",
+            "orderIds": [
+              "D102",
+              "D103",
+              "D201"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "busy": false,
+  "busySince": 1792395657374
+}

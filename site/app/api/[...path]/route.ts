@@ -1,0 +1,1 @@
+import{env}from'cloudflare:workers';import{hosted}from'../../../lib/hosted.js';export const dynamic='force-dynamic';const serve=(request:Request)=>hosted(request,env.DB,env);export const GET=serve;export const POST=serve;
