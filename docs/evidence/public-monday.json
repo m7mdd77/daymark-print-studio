@@ -1,0 +1,435 @@
+{
+  "verifiedAt": "2026-10-19T07:53:56.561Z",
+  "scope": "Genuine public Worker/D1/PC run. Injected Sales price failure was refused; independent Production corrected stock and Finance invoiced/collected. Finance did not escalate the rejected promise; this identified the operating-rule fix.",
+  "state": {
+    "version": 13,
+    "day": 1,
+    "closed": false,
+    "cash": 128700,
+    "revenue": 24000,
+    "cost": 6500,
+    "stock": {
+      "standard": 220,
+      "premium": 100
+    },
+    "stockValue": {
+      "standard": 8800,
+      "premium": 14000
+    },
+    "pressUsed": 0,
+    "orders": [
+      {
+        "id": "D101",
+        "customer": "Morrow Coffee",
+        "product": "Window posters",
+        "quantity": 80,
+        "paper": "standard",
+        "price": 24000,
+        "due": 0,
+        "status": "printed",
+        "invoice": true,
+        "paid": true,
+        "actualCost": 6500,
+        "printedDay": 0
+      },
+      {
+        "id": "D102",
+        "customer": "Northside Gallery",
+        "product": "Opening invitations",
+        "quantity": 100,
+        "paper": "premium",
+        "price": 36000,
+        "due": 1,
+        "status": "queued",
+        "invoice": false,
+        "paid": false
+      },
+      {
+        "id": "D103",
+        "customer": "Field Notes Club",
+        "product": "Meet-up programmes",
+        "quantity": 60,
+        "paper": "standard",
+        "price": 18000,
+        "due": 2,
+        "status": "queued",
+        "invoice": false,
+        "paid": false
+      }
+    ],
+    "leads": [
+      {
+        "id": "L201",
+        "customer": "Sunday Market",
+        "product": "Market flyers",
+        "quantity": 60,
+        "paper": "standard",
+        "offer": 18000,
+        "due": 2,
+        "status": "open"
+      },
+      {
+        "id": "L202",
+        "customer": "Mosaic Festival",
+        "product": "Rush art cards",
+        "quantity": 120,
+        "paper": "premium",
+        "offer": 9000,
+        "due": 0,
+        "status": "open"
+      }
+    ],
+    "shipments": [
+      {
+        "id": "S1",
+        "paper": "premium",
+        "quantity": 200,
+        "eta": 3,
+        "received": false,
+        "paid": true,
+        "cost": 20000
+      },
+      {
+        "id": "X2",
+        "paper": "premium",
+        "quantity": 80,
+        "eta": 1,
+        "cost": 12000,
+        "received": true,
+        "paid": true,
+        "express": true
+      }
+    ],
+    "inbox": [],
+    "health": {
+      "sales": "ready",
+      "production": "ready",
+      "finance": "ready"
+    },
+    "rejections": [
+      {
+        "role": "sales",
+        "leadId": "L202",
+        "code": "margin",
+        "reason": "The quote falls below the 25% margin floor.",
+        "day": 0,
+        "injected": true
+      }
+    ],
+    "decisions": [
+      {
+        "role": "sales",
+        "day": 0,
+        "reason": "L201 is viable for Wednesday at the offered 18000. L202 is due today, which cannot be accepted as same-day, and its 9000 offer for 120 premium cards is loss-making below the 25% margin floor.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 679,
+          "outputTokens": 1005,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "production",
+        "day": 0,
+        "reason": "Premium stock is 20 but D102 (due tomorrow) needs 100, so buy the 80-sheet deficit via express (80×150=12000 cents, within authority and reserve). Today’s 120-sheet capacity covers D101 (80 due today); D103 can follow after D101.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 746,
+          "outputTokens": 531,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "finance",
+        "day": 0,
+        "reason": "D101 is printed, due today, and un-invoiced, so invoice then collect it to close the cash loop. D102/D103 are still queued and cannot be invoiced. L202's below-margin quote is already rejected, so no duplicate escalation is needed.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1264,
+          "outputTokens": 3807,
+          "cacheReadTokens": 1280
+        }
+      }
+    ],
+    "daySummaries": [
+      {
+        "day": 0,
+        "cash": 128700,
+        "revenue": 24000,
+        "cost": 6500,
+        "profit": 17500,
+        "backlog": 2,
+        "printed": 1,
+        "onTime": 1,
+        "capacity": 40
+      }
+    ],
+    "scenario": "sales-slip"
+  },
+  "events": [
+    {
+      "seq": 1,
+      "day": 0,
+      "actor": "system",
+      "type": "scenario",
+      "payload": {
+        "name": "sales-slip"
+      },
+      "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "be35cd9437d8c682a5cf600487a7a002407afd720d5910527bbc1933a6c3ff41"
+    },
+    {
+      "seq": 2,
+      "day": 0,
+      "actor": "sales",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "be35cd9437d8c682a5cf600487a7a002407afd720d5910527bbc1933a6c3ff41",
+      "hash": "6d466a9b08f6498c2b1cf94f2ff5689d75bcdd62bbc95672f5e40906cb87a543"
+    },
+    {
+      "seq": 3,
+      "day": 0,
+      "actor": "sales",
+      "type": "rejected",
+      "payload": {
+        "action": {
+          "type": "accept_lead",
+          "leadId": "L202",
+          "price": 9000
+        },
+        "code": "margin",
+        "reason": "The quote falls below the 25% margin floor.",
+        "injected": true
+      },
+      "previousHash": "6d466a9b08f6498c2b1cf94f2ff5689d75bcdd62bbc95672f5e40906cb87a543",
+      "hash": "14e86a15e9aaf38992e564456b6b06fc33ba5108643be2b8b8a9202d54426234"
+    },
+    {
+      "seq": 4,
+      "day": 0,
+      "actor": "sales",
+      "type": "role_finished",
+      "payload": {
+        "reason": "L201 is viable for Wednesday at the offered 18000. L202 is due today, which cannot be accepted as same-day, and its 9000 offer for 120 premium cards is loss-making below the 25% margin floor.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 679,
+          "outputTokens": 1005,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "14e86a15e9aaf38992e564456b6b06fc33ba5108643be2b8b8a9202d54426234",
+      "hash": "5cde44ff34d784d5d2c2775f6e7edd84d41381e6185f5921a1a7d3a44ab742fa"
+    },
+    {
+      "seq": 5,
+      "day": 0,
+      "actor": "production",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "5cde44ff34d784d5d2c2775f6e7edd84d41381e6185f5921a1a7d3a44ab742fa",
+      "hash": "dc435f6680005e2e74e773e8b937d48d74c3adc43e4297806048c90aa6d89cca"
+    },
+    {
+      "seq": 6,
+      "day": 0,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "buy_express",
+          "paper": "premium",
+          "quantity": 80
+        }
+      },
+      "previousHash": "dc435f6680005e2e74e773e8b937d48d74c3adc43e4297806048c90aa6d89cca",
+      "hash": "f54cf599c0566baa143f57a90598d71bdc64c0047cffcf4c546935ca2a450271"
+    },
+    {
+      "seq": 7,
+      "day": 0,
+      "actor": "production",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "print",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "f54cf599c0566baa143f57a90598d71bdc64c0047cffcf4c546935ca2a450271",
+      "hash": "b2e3eb3b66df561c4bf90fad51da2e3a3ce0e0fe1bc6971713552e8db3439830"
+    },
+    {
+      "seq": 8,
+      "day": 0,
+      "actor": "production",
+      "type": "role_finished",
+      "payload": {
+        "reason": "Premium stock is 20 but D102 (due tomorrow) needs 100, so buy the 80-sheet deficit via express (80×150=12000 cents, within authority and reserve). Today’s 120-sheet capacity covers D101 (80 due today); D103 can follow after D101.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 746,
+          "outputTokens": 531,
+          "cacheReadTokens": 0
+        }
+      },
+      "previousHash": "b2e3eb3b66df561c4bf90fad51da2e3a3ce0e0fe1bc6971713552e8db3439830",
+      "hash": "0e7fe824ffedf32ada72e742543cacdbcf71b57bc2beed9c6edb5a00d3e8fc7f"
+    },
+    {
+      "seq": 9,
+      "day": 0,
+      "actor": "finance",
+      "type": "role_started",
+      "payload": {},
+      "previousHash": "0e7fe824ffedf32ada72e742543cacdbcf71b57bc2beed9c6edb5a00d3e8fc7f",
+      "hash": "49eed9d53286a715cd075464af9a9f699eb1312ffe2266fec3f6fbcc6e9ddcbb"
+    },
+    {
+      "seq": 10,
+      "day": 0,
+      "actor": "finance",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "invoice",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "49eed9d53286a715cd075464af9a9f699eb1312ffe2266fec3f6fbcc6e9ddcbb",
+      "hash": "d695e1e0e69e9948e6baececaea5d142ea7701dc3efd305455d709141f84a44b"
+    },
+    {
+      "seq": 11,
+      "day": 0,
+      "actor": "finance",
+      "type": "action",
+      "payload": {
+        "action": {
+          "type": "collect",
+          "orderIds": [
+            "D101"
+          ]
+        }
+      },
+      "previousHash": "d695e1e0e69e9948e6baececaea5d142ea7701dc3efd305455d709141f84a44b",
+      "hash": "cd73499327dea313752ff635ee6c9583fc8c191d52e980cc0d4c8733ac729e78"
+    },
+    {
+      "seq": 12,
+      "day": 0,
+      "actor": "finance",
+      "type": "role_finished",
+      "payload": {
+        "reason": "D101 is printed, due today, and un-invoiced, so invoice then collect it to close the cash loop. D102/D103 are still queued and cannot be invoiced. L202's below-margin quote is already rejected, so no duplicate escalation is needed.",
+        "model": "deepseek-v4-flash",
+        "usage": {
+          "inputTokens": 1264,
+          "outputTokens": 3807,
+          "cacheReadTokens": 1280
+        }
+      },
+      "previousHash": "cd73499327dea313752ff635ee6c9583fc8c191d52e980cc0d4c8733ac729e78",
+      "hash": "059c5484075ec00c5c61f215a2b22095617c271a7867b7b0227033f3234795b9"
+    },
+    {
+      "seq": 13,
+      "day": 0,
+      "actor": "system",
+      "type": "day_closed",
+      "payload": {},
+      "previousHash": "059c5484075ec00c5c61f215a2b22095617c271a7867b7b0227033f3234795b9",
+      "hash": "e292303d3fe51ed9031a61ee7e445d287586abc13d3cfc77b05e654b1be79519"
+    }
+  ],
+  "traces": [
+    {
+      "role": "sales",
+      "day": 0,
+      "version": 2,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 679,
+        "outputTokens": 1005,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "L201 is viable for Wednesday at the offered 18000. L202 is due today, which cannot be accepted as same-day, and its 9000 offer for 120 premium cards is loss-making below the 25% margin floor.",
+        "actions": [
+          {
+            "type": "accept_lead",
+            "leadId": "L201",
+            "price": 18000
+          },
+          {
+            "type": "escalate",
+            "leadId": "L202",
+            "reason": "Due today: same-day production impossible; express arrives tomorrow. Also 9000 for 120 premium cards is loss-making below the 25% margin floor."
+          }
+        ]
+      }
+    },
+    {
+      "role": "production",
+      "day": 0,
+      "version": 5,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 746,
+        "outputTokens": 531,
+        "cacheReadTokens": 0
+      },
+      "plan": {
+        "reason": "Premium stock is 20 but D102 (due tomorrow) needs 100, so buy the 80-sheet deficit via express (80×150=12000 cents, within authority and reserve). Today’s 120-sheet capacity covers D101 (80 due today); D103 can follow after D101.",
+        "actions": [
+          {
+            "type": "buy_express",
+            "paper": "premium",
+            "quantity": 80
+          },
+          {
+            "type": "print",
+            "orderIds": [
+              "D101"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "finance",
+      "day": 0,
+      "version": 9,
+      "model": "deepseek-v4-flash",
+      "usage": {
+        "inputTokens": 1264,
+        "outputTokens": 3807,
+        "cacheReadTokens": 1280
+      },
+      "plan": {
+        "reason": "D101 is printed, due today, and un-invoiced, so invoice then collect it to close the cash loop. D102/D103 are still queued and cannot be invoiced. L202's below-margin quote is already rejected, so no duplicate escalation is needed.",
+        "actions": [
+          {
+            "type": "invoice",
+            "orderIds": [
+              "D101"
+            ]
+          },
+          {
+            "type": "collect",
+            "orderIds": [
+              "D101"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "busy": false,
+  "busySince": 1792396140789
+}

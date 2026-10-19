@@ -2,11 +2,13 @@
 
 A working slice of [The Autonomous Company Simulator](https://build.doo.ooo/challenges/autonomous-company-simulator): an independent print studio operated by three connected AI roles.
 
-[Live studio](https://daymark-print-studio.choggyacc.chatgpt.site/) · [Public source](https://github.com/m7mdd77/daymark-print-studio)
+[Live studio](https://daymark-print-studio.choggyacc.chatgpt.site/) · [Public source](https://github.com/m7mdd77/daymark-print-studio) · [Continuous replay capture](https://daymark-print-studio.choggyacc.chatgpt.site/walkthrough.mp4)
 
 Sales turns enquiries into viable orders. Production buys missing paper and prints within the actual schedule. Finance invoices completed work and collects payment. Each role makes a separate genuine DeepSeek call, receives its own scoped record view, and has its own action allowlist. Their actions update the same durable company ledger. A single prompt does not generate three personas or the whole day.
 
 All customers, orders, paper purchases and money are fictional. Actions genuinely mutate this simulator's records; nothing is sent to a customer, supplier or payment service.
+
+The 90.3-second screen capture shows replay of Tuesday's already committed, genuine AI-operated ledger. It contains no cuts or speed changes. It is not a recording of new inference: the subsequent live owner decision and Wednesday–Friday runs are documented separately in the published full-week ledger evidence.
 
 ## Run a clean checkout
 
@@ -33,7 +35,7 @@ The operator may reuse the existing private sibling environment through `--env-f
 
 1. **Run Monday.** A normal cotton-paper delivery slips to Thursday. Each role independently reads shared records and chooses up to three permitted actions. Watch tickets, stock and cash change as those actions commit.
 2. Production can order the exact 80-sheet shortage by express delivery without involving the owner. It arrives for Tuesday's 100-sheet job. This is the self-correction: the model notices the shortage and selects a bounded purchase; no scenario script injects the corrective action.
-3. Sales sends an impossible same-day rush enquiry to **Your desk**. Approve a smaller, profitable standard-paper order at the earliest capacity-safe date, or decline it. The owner choice really changes the shared records.
+3. Sales sends an impossible same-day rush enquiry to **Your desk**. Approve a smaller, profitable standard-paper order at the earliest capacity-safe date, or decline it. The owner choice really changes the shared records. If the model overlooks an unresolved rejected promise, an explicitly labeled operating rule routes it to the owner at day close.
 4. **Run Tuesday** against Monday's committed orders, stock receipts and cash. Continue through Friday to close the week. Finance can catch up printed-but-uninvoiced work after a failed prior reading.
 5. Select a completed day, scrub its marks or **Replay day**. This projects committed events, without calling AI or repeating purchases/payments. **Return to live studio** before acting.
 6. Inspect a mark for before/after figures, role rationale, read version, token usage and hash-chain linkage. Download the actual daybook as JSON.

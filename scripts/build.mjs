@@ -1,4 +1,39 @@
-import{mkdirSync,cpSync,copyFileSync,readFileSync,writeFileSync,existsSync}from'node:fs';
-mkdirSync('outputs/local',{recursive:true});cpSync('web','outputs/local',{recursive:true});mkdirSync('site/public',{recursive:true});mkdirSync('site/lib',{recursive:true});for(const file of['app.js','style.css'])copyFileSync('web/'+file,'site/public/'+file);copyFileSync('src/domain.js','outputs/local/domain.js');copyFileSync('src/domain.js','site/public/domain.js');for(const file of['domain.js','hosted.js'])copyFileSync('src/'+file,'site/lib/'+file);for(const file of['walkthrough.mp4','favicon.svg'])if(existsSync('site/public/'+file))copyFileSync('site/public/'+file,'outputs/local/'+file);
-const html=readFileSync('web/index.html','utf8'),body=html.match(/<body>([\s\S]*)<\/body>/)[1];writeFileSync('site/app/page.tsx','export default function Page(){return <div style={{display:"contents"}} dangerouslySetInnerHTML={{__html:'+JSON.stringify(body)+'}}/>;}\n');writeFileSync('site/app/layout.tsx',`import type{ReactNode}from'react';export const metadata={title:'Daymark — the studio runs together',description:'Three independent agents. One shared print studio.'};export default function Layout({children}:{children:ReactNode}){return <html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="stylesheet" href="/style.css"/><script type="module" src="/app.js"/></head><body>{children}</body></html>;}`);
-mkdirSync('site/app/api/[...path]',{recursive:true});writeFileSync('site/app/api/[...path]/route.ts',`import{env}from'cloudflare:workers';import{hosted}from'../../../lib/hosted.js';export const dynamic='force-dynamic';const serve=(request:Request)=>hosted(request,env.DB,env);export const GET=serve;export const POST=serve;`);console.log('Daymark local and hosted source prepared.');
+import {
+  mkdirSync,
+  cpSync,
+  copyFileSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+} from "node:fs";
+mkdirSync("outputs/local", { recursive: true });
+cpSync("web", "outputs/local", { recursive: true });
+mkdirSync("site/public", { recursive: true });
+mkdirSync("site/lib", { recursive: true });
+for (const file of ["app.js", "style.css"])
+  copyFileSync("web/" + file, "site/public/" + file);
+copyFileSync("src/domain.js", "outputs/local/domain.js");
+copyFileSync("src/domain.js", "site/public/domain.js");
+for (const file of ["domain.js", "hosted.js"])
+  copyFileSync("src/" + file, "site/lib/" + file);
+for (const file of ["walkthrough.mp4", "favicon.svg"])
+  if (existsSync("site/public/" + file))
+    copyFileSync("site/public/" + file, "outputs/local/" + file);
+const html = readFileSync("web/index.html", "utf8"),
+  body = html.match(/<body>([\s\S]*)<\/body>/)[1];
+writeFileSync(
+  "site/app/page.tsx",
+  'export default function Page(){return <div style={{display:"contents"}} dangerouslySetInnerHTML={{__html:' +
+    JSON.stringify(body) +
+    "}}/>;}\n",
+);
+writeFileSync(
+  "site/app/layout.tsx",
+  `import type{ReactNode}from'react';export const metadata={title:'Daymark — the studio runs together',description:'Three independent agents. One shared print studio.'};export default function Layout({children}:{children:ReactNode}){return <html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/style.css"/><script type="module" src="/app.js"/></head><body>{children}</body></html>;}`,
+);
+mkdirSync("site/app/api/[...path]", { recursive: true });
+writeFileSync(
+  "site/app/api/[...path]/route.ts",
+  `import{env}from'cloudflare:workers';import{hosted}from'../../../lib/hosted.js';export const dynamic='force-dynamic';const serve=(request:Request)=>hosted(request,env.DB,env);export const GET=serve;export const POST=serve;`,
+);
+console.log("Daymark local and hosted source prepared.");

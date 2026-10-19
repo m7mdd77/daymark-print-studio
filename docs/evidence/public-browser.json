@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-10-19T12:32:09.236Z",
+  "base": "https://daymark-print-studio.choggyacc.chatgpt.site",
+  "scope": "Actual Chrome UI replay with commands disabled, return to live, reload persistence, and purpose-built browser download of the visible export link. Downloaded attachment compared against authoritative SQLite and hash-verified replay.",
+  "outcomes": {
+    "replayCommandsDisabled": true,
+    "actualDownloadMatchesCommittedState": true,
+    "downloadedLedgerReplaysExactly": true,
+    "reloadPreservedCompany": true
+  },
+  "filename": "daymark-daybook (1).json",
+  "downloadSha256": "dc91aa968c4ee5513ea25b04bcfbcb0a256eccf48e7f8a3802f351476e4403d1",
+  "cash": 160700,
+  "revenue": 60000,
+  "events": 25
+}

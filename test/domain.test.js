@@ -1,12 +1,252 @@
-import test from'node:test';import assert from'node:assert/strict';import{seed,execute,metrics,validatePlan,reduceEvent,revisedDue}from'../src/domain.js';
-test('Sales accepts a viable enquiry and cannot change its fields or another role’s records',()=>{const s=seed(),a=execute(s,'sales',{type:'accept_lead',leadId:'L201',price:18000});assert.equal(a.orders.length,4);assert.equal(s.orders.length,3);assert.throws(()=>execute(s,'sales',{type:'collect',orderIds:['D101']}),{code:'authority'});assert.throws(()=>validatePlan({reason:'A good plan',actions:[{type:'accept_lead',leadId:'L201',price:18000,approved:true}]},'sales'),{code:'authority'});});
-test('loss-making and same-day promises are refused without partial mutations',()=>{const s=seed();assert.throws(()=>execute(s,'sales',{type:'accept_lead',leadId:'L202',price:9000}),{code:'margin'});assert.deepEqual(s,seed());s.leads[1].offer=40000;assert.throws(()=>execute(s,'sales',{type:'accept_lead',leadId:'L202',price:40000}),{code:'promise'});});
-test('new work is paused after a production role failure',()=>{const s=seed();s.health.production='failed';assert.throws(()=>execute(s,'sales',{type:'accept_lead',leadId:'L201',price:18000}),{code:'capacity'});});
-test('printing consumes actual paper and labour, but cannot exceed stock or capacity',()=>{const s=seed(),a=execute(s,'production',{type:'print',orderIds:['D101']});assert.equal(a.stock.standard,220);assert.equal(a.cash,116700);assert.equal(a.orders[0].actualCost,6500);assert.equal(a.cost,6500);assert.throws(()=>execute(s,'production',{type:'print',orderIds:['D102']}),{code:'stock'});assert.throws(()=>execute(s,'production',{type:'print',orderIds:['D101','D103']}),{code:'capacity'});assert.deepEqual(s,seed());});
-test('express purchase obeys cash reserve and authority and arrives only on day close',()=>{const s=seed(),a=execute(s,'production',{type:'buy_express',paper:'premium',quantity:80});assert.equal(a.cash,108000);assert.equal(a.stock.premium,20);assert.equal(a.shipments.at(-1).eta,1);assert.throws(()=>execute(a,'production',{type:'buy_express',paper:'premium',quantity:80}),{code:'duplicate'});const low=seed();low.cash=31000;assert.throws(()=>execute(low,'production',{type:'buy_express',paper:'premium',quantity:80}),{code:'cash'});});
-test('invoice and payment require printed work and are each exactly once',()=>{let s=seed();assert.throws(()=>execute(s,'finance',{type:'invoice',orderIds:['D101']}),{code:'invoice'});s=execute(s,'production',{type:'print',orderIds:['D101']});assert.throws(()=>execute(s,'finance',{type:'collect',orderIds:['D101']}),{code:'payment'});s=execute(s,'finance',{type:'invoice',orderIds:['D101']});s=execute(s,'finance',{type:'collect',orderIds:['D101']});assert.equal(s.revenue,24000);assert.equal(s.cash,140700);assert.equal(metrics(s).profit,17500);assert.throws(()=>execute(s,'finance',{type:'collect',orderIds:['D101']}),{code:'payment'});assert.throws(()=>execute(s,'finance',{type:'invoice',orderIds:['D101']}),{code:'invoice'});});
-test('multi-order invoice is atomic and cannot bill a queued second order',()=>{const s=execute(seed(),'production',{type:'print',orderIds:['D101']});assert.throws(()=>execute(s,'finance',{type:'invoice',orderIds:['D101','D102']}),{code:'invoice'});assert.equal(s.revenue,0);assert.equal(s.orders[0].invoice,false);});
-test('duplicate IDs, unknown IDs and unbounded model authority are refused',()=>{assert.throws(()=>execute(seed(),'production',{type:'print',orderIds:['D101','D101']}),{code:'shape'});assert.throws(()=>execute(seed(),'production',{type:'print',orderIds:['NOT-THERE']}),{code:'record'});for(const p of[{reason:'x',actions:[{type:'publish'}]},{reason:'x',actions:[{type:'wait'}],sql:'DROP TABLE orders'},{reason:'x',actions:[]}])assert.throws(()=>validatePlan(p,'sales'));});
-test('finance cannot quarantine a customer without a recorded rejected action',()=>{assert.throws(()=>execute(seed(),'finance',{type:'quarantine',leadId:'L201'}),{code:'evidence'});});
-test('owner exception is real, capacity aware, and cannot be approved twice',()=>{let s=execute(seed(),'sales',{type:'accept_lead',leadId:'L201',price:18000});s=execute(s,'sales',{type:'escalate',leadId:'L202',reason:'The rush is not safe to promise.'});assert.throws(()=>execute(s,'sales',{type:'escalate',leadId:'L202',reason:'Duplicate exception request.'}),{code:'duplicate'});s=execute(s,'production',{type:'print',orderIds:['D101']});s=reduceEvent(s,{seq:1,type:'day_closed',payload:{}});assert.equal(revisedDue(s),3);const event={seq:2,actor:'owner',type:'owner_decision',payload:{id:'H1',choice:'revised_quote'}};const a=reduceEvent(s,event);assert.equal(a.orders.at(-1).due,3);assert.equal(a.orders.at(-1).price,24000);assert.equal(a.inbox[0].status,'resolved');assert.throws(()=>reduceEvent(a,{...event,seq:3}),{code:'stale'});});
-test('premium job cost reflects express materials, not a fabricated standard margin',()=>{let s=reduceEvent(seed(),{seq:1,type:'scenario',payload:{name:'paper-delay'}});s=execute(s,'production',{type:'buy_express',paper:'premium',quantity:80});s=reduceEvent(s,{seq:1,type:'day_closed',payload:{}});assert.equal(s.stock.premium,100);assert.equal(s.stockValue.premium,14000);s=execute(s,'production',{type:'print',orderIds:['D102']});assert.equal(s.orders[1].actualCost,18000);assert.equal(s.stockValue.premium,0);s=execute(s,'finance',{type:'invoice',orderIds:['D102']});assert.equal(metrics(s).profit,18000);});
+import test from "node:test";
+import assert from "node:assert/strict";
+import {
+  seed,
+  execute,
+  metrics,
+  validatePlan,
+  reduceEvent,
+  revisedDue,
+} from "../src/domain.js";
+test("Sales accepts a viable enquiry and cannot change its fields or another role’s records", () => {
+  const s = seed(),
+    a = execute(s, "sales", {
+      type: "accept_lead",
+      leadId: "L201",
+      price: 18000,
+    });
+  assert.equal(a.orders.length, 4);
+  assert.equal(s.orders.length, 3);
+  assert.throws(
+    () => execute(s, "sales", { type: "collect", orderIds: ["D101"] }),
+    { code: "authority" },
+  );
+  assert.throws(
+    () =>
+      validatePlan(
+        {
+          reason: "A good plan",
+          actions: [
+            {
+              type: "accept_lead",
+              leadId: "L201",
+              price: 18000,
+              approved: true,
+            },
+          ],
+        },
+        "sales",
+      ),
+    { code: "authority" },
+  );
+});
+test("loss-making and same-day promises are refused without partial mutations", () => {
+  const s = seed();
+  assert.throws(
+    () =>
+      execute(s, "sales", { type: "accept_lead", leadId: "L202", price: 9000 }),
+    { code: "margin" },
+  );
+  assert.deepEqual(s, seed());
+  s.leads[1].offer = 40000;
+  assert.throws(
+    () =>
+      execute(s, "sales", {
+        type: "accept_lead",
+        leadId: "L202",
+        price: 40000,
+      }),
+    { code: "promise" },
+  );
+});
+test("new work is paused after a production role failure", () => {
+  const s = seed();
+  s.health.production = "failed";
+  assert.throws(
+    () =>
+      execute(s, "sales", {
+        type: "accept_lead",
+        leadId: "L201",
+        price: 18000,
+      }),
+    { code: "capacity" },
+  );
+});
+test("printing consumes actual paper and labour, but cannot exceed stock or capacity", () => {
+  const s = seed(),
+    a = execute(s, "production", { type: "print", orderIds: ["D101"] });
+  assert.equal(a.stock.standard, 220);
+  assert.equal(a.cash, 116700);
+  assert.equal(a.orders[0].actualCost, 6500);
+  assert.equal(a.cost, 6500);
+  assert.throws(
+    () => execute(s, "production", { type: "print", orderIds: ["D102"] }),
+    { code: "stock" },
+  );
+  assert.throws(
+    () =>
+      execute(s, "production", { type: "print", orderIds: ["D101", "D103"] }),
+    { code: "capacity" },
+  );
+  assert.deepEqual(s, seed());
+});
+test("express purchase obeys cash reserve and authority and arrives only on day close", () => {
+  const s = seed(),
+    a = execute(s, "production", {
+      type: "buy_express",
+      paper: "premium",
+      quantity: 80,
+    });
+  assert.equal(a.cash, 108000);
+  assert.equal(a.stock.premium, 20);
+  assert.equal(a.shipments.at(-1).eta, 1);
+  assert.throws(
+    () =>
+      execute(a, "production", {
+        type: "buy_express",
+        paper: "premium",
+        quantity: 80,
+      }),
+    { code: "duplicate" },
+  );
+  const low = seed();
+  low.cash = 31000;
+  assert.throws(
+    () =>
+      execute(low, "production", {
+        type: "buy_express",
+        paper: "premium",
+        quantity: 80,
+      }),
+    { code: "cash" },
+  );
+});
+test("invoice and payment require printed work and are each exactly once", () => {
+  let s = seed();
+  assert.throws(
+    () => execute(s, "finance", { type: "invoice", orderIds: ["D101"] }),
+    { code: "invoice" },
+  );
+  s = execute(s, "production", { type: "print", orderIds: ["D101"] });
+  assert.throws(
+    () => execute(s, "finance", { type: "collect", orderIds: ["D101"] }),
+    { code: "payment" },
+  );
+  s = execute(s, "finance", { type: "invoice", orderIds: ["D101"] });
+  s = execute(s, "finance", { type: "collect", orderIds: ["D101"] });
+  assert.equal(s.revenue, 24000);
+  assert.equal(s.cash, 140700);
+  assert.equal(metrics(s).profit, 17500);
+  assert.throws(
+    () => execute(s, "finance", { type: "collect", orderIds: ["D101"] }),
+    { code: "payment" },
+  );
+  assert.throws(
+    () => execute(s, "finance", { type: "invoice", orderIds: ["D101"] }),
+    { code: "invoice" },
+  );
+});
+test("multi-order invoice is atomic and cannot bill a queued second order", () => {
+  const s = execute(seed(), "production", {
+    type: "print",
+    orderIds: ["D101"],
+  });
+  assert.throws(
+    () =>
+      execute(s, "finance", { type: "invoice", orderIds: ["D101", "D102"] }),
+    { code: "invoice" },
+  );
+  assert.equal(s.revenue, 0);
+  assert.equal(s.orders[0].invoice, false);
+});
+test("duplicate IDs, unknown IDs and unbounded model authority are refused", () => {
+  assert.throws(
+    () =>
+      execute(seed(), "production", {
+        type: "print",
+        orderIds: ["D101", "D101"],
+      }),
+    { code: "shape" },
+  );
+  assert.throws(
+    () =>
+      execute(seed(), "production", { type: "print", orderIds: ["NOT-THERE"] }),
+    { code: "record" },
+  );
+  for (const p of [
+    { reason: "x", actions: [{ type: "publish" }] },
+    { reason: "x", actions: [{ type: "wait" }], sql: "DROP TABLE orders" },
+    { reason: "x", actions: [] },
+  ])
+    assert.throws(() => validatePlan(p, "sales"));
+});
+test("finance cannot quarantine a customer without a recorded rejected action", () => {
+  assert.throws(
+    () => execute(seed(), "finance", { type: "quarantine", leadId: "L201" }),
+    { code: "evidence" },
+  );
+});
+test("owner exception is real, capacity aware, and cannot be approved twice", () => {
+  let s = execute(seed(), "sales", {
+    type: "accept_lead",
+    leadId: "L201",
+    price: 18000,
+  });
+  s = execute(s, "sales", {
+    type: "escalate",
+    leadId: "L202",
+    reason: "The rush is not safe to promise.",
+  });
+  assert.throws(
+    () =>
+      execute(s, "sales", {
+        type: "escalate",
+        leadId: "L202",
+        reason: "Duplicate exception request.",
+      }),
+    { code: "duplicate" },
+  );
+  s = execute(s, "production", { type: "print", orderIds: ["D101"] });
+  s = reduceEvent(s, { seq: 1, type: "day_closed", payload: {} });
+  assert.equal(revisedDue(s), 3);
+  const event = {
+    seq: 2,
+    actor: "owner",
+    type: "owner_decision",
+    payload: { id: "H1", choice: "revised_quote" },
+  };
+  const a = reduceEvent(s, event);
+  assert.equal(a.orders.at(-1).due, 3);
+  assert.equal(a.orders.at(-1).price, 24000);
+  assert.equal(a.inbox[0].status, "resolved");
+  assert.throws(() => reduceEvent(a, { ...event, seq: 3 }), { code: "stale" });
+});
+test("premium job cost reflects express materials, not a fabricated standard margin", () => {
+  let s = reduceEvent(seed(), {
+    seq: 1,
+    type: "scenario",
+    payload: { name: "paper-delay" },
+  });
+  s = execute(s, "production", {
+    type: "buy_express",
+    paper: "premium",
+    quantity: 80,
+  });
+  s = reduceEvent(s, { seq: 1, type: "day_closed", payload: {} });
+  assert.equal(s.stock.premium, 100);
+  assert.equal(s.stockValue.premium, 14000);
+  s = execute(s, "production", { type: "print", orderIds: ["D102"] });
+  assert.equal(s.orders[1].actualCost, 18000);
+  assert.equal(s.stockValue.premium, 0);
+  s = execute(s, "finance", { type: "invoice", orderIds: ["D102"] });
+  assert.equal(metrics(s).profit, 18000);
+});
+test("an owner promise after interrupted production accounts for already-used press capacity", () => {
+  const s = seed();
+  s.orders = [];
+  s.day = 2;
+  s.pressUsed = 100;
+  assert.equal(revisedDue(s), 3);
+  s.day = 4;
+  assert.equal(revisedDue(s), null);
+});
