@@ -14,6 +14,6 @@ Live brief: [The Autonomous Company Simulator](https://build.doo.ooo/challenges/
 | Architecture and thesis | `architecture.md` and `thesis.md` (under 300 words). |
 | Public repo and live demo | https://github.com/m7mdd77/daymark-print-studio and https://daymark-print-studio.choggyacc.chatgpt.site/ |
 | Continuous walkthrough | Continuous 90.3-second Tuesday replay capture at `/walkthrough.mp4`; no cuts or speed changes. New inference and the owner decision are proved separately in the complete ledger. `evidence/walkthrough.json`. |
-| Saved competition entry | Pending final release verification and capture. |
+| Saved competition entry | Submitted October 19, 2026. The authenticated mission page confirmed “Entry saved. Grab your share kit below ↓” and changed to “Update your entry.” Profile-bearing receipt and screenshot remain local and ignored. This confirms a saved entry, not judging or an award. |
 
 Evidence is not a claim of production procurement, real customer revenue, judge acceptance, rank or an award.
