@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-10-25T05:21:23.407Z",
+  "model": "gpt-6.1-sol",
+  "runs": [
+    {
+      "name": "daymark",
+      "ok": true,
+      "model": "gpt-6.1-sol",
+      "usage": {
+        "inputTokens": 4686,
+        "outputTokens": 1457,
+        "cacheReadTokens": 0
+      }
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+Current runtime: **GPT 6.1 Sol through AgentRouter**. See [configuration and verification](docs/sol-migration.md). Dated DeepSeek recordings remain historical evidence.
+
 # Daymark — the studio runs together
 
 A working slice of [The Autonomous Company Simulator](https://build.doo.ooo/challenges/autonomous-company-simulator): an independent print studio operated by three connected AI roles.
