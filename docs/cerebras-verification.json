@@ -1,0 +1,67 @@
+{
+  "verifiedAt": "2026-10-28T07:30:49.965Z",
+  "provider": "Cerebras",
+  "model": "qwen-3.8-27b",
+  "scope": "Fresh genuine proposal-only migration checks on synthetic data. Existing operator allowance directories retained. No external actions or cached answers.",
+  "tests": {
+    "passed": 41,
+    "failed": 0,
+    "scope": "Local regression and mocked provider boundary tests; independent from the genuine call below."
+  },
+  "local": {
+    "name": "daymark",
+    "ok": true,
+    "model": "qwen-3.8-27b",
+    "usage": {
+      "inputTokens": 684,
+      "outputTokens": 250,
+      "cacheReadTokens": 0
+    },
+    "elapsedMs": 492
+  },
+  "publicVerification": {
+    "name": "daymark",
+    "ok": true,
+    "roles": [
+      {
+        "role": "sales",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 684,
+          "outputTokens": 176,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "production",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 823,
+          "outputTokens": 157,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "finance",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 902,
+          "outputTokens": 136,
+          "cacheReadTokens": 0
+        }
+      }
+    ],
+    "decision": "completed synthetic day",
+    "ownerDecisionsSubmitted": 0,
+    "elapsedMs": 8633
+  },
+  "deployment": {
+    "name": "daymark",
+    "project_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4",
+    "version_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4~appgver_3c2e4623b34c81919df7d4f0086f80af",
+    "deployment_id": "appgdep_6ae1a961d5148191bb54f3d62dcb6898",
+    "status": "succeeded",
+    "url": "https://daymark-print-studio.choggyacc.chatgpt.site",
+    "commit_sha": "09edb33a8404bfdbe98e9641050062fe86383d17"
+  }
+}

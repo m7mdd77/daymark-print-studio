@@ -56,11 +56,11 @@ test("each role has its own client call and an invalid authority cannot become a
 });
 test("provider and model restrictions cannot be redirected by environment configuration", () => {
   assert.throws(
-    () => configuration({ AGENTROUTER_BASE_URL: "https://attacker.example" }),
-    { code: "configuration" },
+    () => configuration({ CEREBRAS_BASE_URL: "https://attacker.example" }),
+    { code: "invalid_configuration" },
   );
   assert.throws(
-    () => configuration({ AGENTROUTER_MODEL: "unverified-model" }),
-    { code: "configuration" },
+    () => configuration({ CEREBRAS_MODEL: "unverified-model" }),
+    { code: "invalid_configuration" },
   );
 });

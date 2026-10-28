@@ -1,4 +1,4 @@
-Current runtime: **GPT 6.1 Sol through AgentRouter**. See [configuration and verification](docs/sol-migration.md). Dated DeepSeek recordings remain historical evidence.
+Current runtime: **Qwen 3.8 27B through Cerebras**. See [configuration and fresh verification](docs/cerebras-migration.md). Earlier provider recordings and evidence remain dated history.
 
 # Daymark — the studio runs together
 
@@ -6,7 +6,7 @@ A working slice of [The Autonomous Company Simulator](https://build.doo.ooo/chal
 
 [Live studio](https://daymark-print-studio.choggyacc.chatgpt.site/) · [Public source](https://github.com/m7mdd77/daymark-print-studio) · [Continuous replay capture](https://daymark-print-studio.choggyacc.chatgpt.site/walkthrough.mp4)
 
-Sales turns enquiries into viable orders. Production buys missing paper and prints within the actual schedule. Finance invoices completed work and collects payment. Each role makes a separate genuine DeepSeek call, receives its own scoped record view, and has its own action allowlist. Their actions update the same durable company ledger. A single prompt does not generate three personas or the whole day.
+Sales turns enquiries into viable orders. Production buys missing paper and prints within the actual schedule. Finance invoices completed work and collects payment. Each role makes a separate genuine Cerebras call, receives its own scoped record view, and has its own action allowlist. Their actions update the same durable company ledger. A single prompt does not generate three personas or the whole day.
 
 All customers, orders, paper purchases and money are fictional. Actions genuinely mutate this simulator's records; nothing is sent to a customer, supplier or payment service.
 
@@ -24,7 +24,7 @@ node server.js
 
 Open http://127.0.0.1:3301. The studio begins with real local simulator records, but clearly shows the live team offline. There are no canned model responses or simulated success fallback.
 
-For genuine AI, copy `.env.example` to ignored `.env`, supply an approved AgentRouter key and the actual supported Claude Code executable. In a second terminal:
+For genuine AI, copy `.env.example` to ignored `.env`, set CEREBRAS_API_KEY or CEREBRAS_KEY_FILE. In a second terminal:
 
 ```powershell
 $env:DAYMARK_SITE_URL='http://127.0.0.1:3301'

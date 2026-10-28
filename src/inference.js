@@ -1,40 +1,15 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { join } from "node:path";
-import { invokeSupportedClient } from "./cli-client.js";
+import {invokeCerebras,cerebrasConfig} from './cerebras-client.js';
 import { roleMessages, parseRole } from "./roles.js";
 import { requireRule } from "./domain.js";
-export function configuration(env = process.env) {
-  const endpoint = new URL(
-      env.AGENTROUTER_BASE_URL || "https://agentrouter.org",
-    ),
-    model = env.AGENTROUTER_MODEL || "gpt-6.1-sol",
-    key = env.AGENTROUTER_API_KEY || "",
-    clientPath = env.CODEX_PATH || "codex.exe";
-  requireRule(
-    endpoint.protocol === "https:" &&
-      endpoint.hostname === "agentrouter.org" &&
-      !endpoint.username &&
-      !endpoint.password &&
-      !endpoint.search &&
-      !endpoint.hash &&
-      model === "gpt-6.1-sol",
-    "configuration",
-    "Use the approved AgentRouter origin and verified Sol model.",
-  );
-  return {
-    endpoint: endpoint.origin,
-    model,
-    key,
-    clientPath,
-    configured: Boolean(key && (existsSync(clientPath) || !/[\\/]/.test(clientPath))),
-  };
-}
+export function configuration(env=process.env){return cerebrasConfig(env);}
 export function inference(
   directory,
   {
     config = configuration(),
-    client = invokeSupportedClient,
+    client = invokeCerebras,
     now = Date.now,
   } = {},
 ) {
