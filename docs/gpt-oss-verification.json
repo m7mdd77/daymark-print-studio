@@ -1,0 +1,77 @@
+{
+  "at": "2026-11-02T09:16:57.229Z",
+  "provider": "Cerebras",
+  "model": "gpt-oss-120b",
+  "credentialSource": "New operator-selected private key file; no credential contents or personal file paths published.",
+  "tests": {
+    "passed": 41,
+    "failed": 0,
+    "scope": "Local regression tests with injected provider responses; separate from genuine model evidence."
+  },
+  "local": {
+    "name": "daymark",
+    "ok": true,
+    "model": "gpt-oss-120b",
+    "usage": {
+      "inputTokens": 640,
+      "outputTokens": 300,
+      "cacheReadTokens": 0
+    },
+    "elapsedMs": 1051
+  },
+  "previousLocalAttempts": [
+    {
+      "name": "daymark",
+      "ok": false,
+      "code": "client_request_failed",
+      "message": "Cerebras is rate-limiting requests. No automatic retry was made.",
+      "elapsedMs": 292,
+      "retryAfterMs": 58000
+    }
+  ],
+  "publicVerification": {
+    "name": "daymark",
+    "ok": true,
+    "roles": [
+      {
+        "role": "sales",
+        "model": "gpt-oss-120b",
+        "usage": {
+          "inputTokens": 128,
+          "outputTokens": 372,
+          "cacheReadTokens": 512
+        }
+      },
+      {
+        "role": "production",
+        "model": "gpt-oss-120b",
+        "usage": {
+          "inputTokens": 744,
+          "outputTokens": 183,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "finance",
+        "model": "gpt-oss-120b",
+        "usage": {
+          "inputTokens": 836,
+          "outputTokens": 150,
+          "cacheReadTokens": 0
+        }
+      }
+    ],
+    "decision": "completed synthetic day",
+    "ownerDecisionsSubmitted": 0,
+    "elapsedMs": 6406
+  },
+  "deployment": {
+    "name": "daymark",
+    "project_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4",
+    "version_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4~appgver_3c2e4623b34c81919df7d4f0086f80af",
+    "deployment_id": "appgdep_6ae853cbcc1c8191b62c2f57cf8dd02c",
+    "status": "succeeded",
+    "url": "https://daymark-print-studio.choggyacc.chatgpt.site",
+    "commit_sha": "09edb33a8404bfdbe98e9641050062fe86383d17"
+  }
+}
