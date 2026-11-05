@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-05T06:58:38.318Z",
+  "provider": "Cerebras",
+  "model": "qwen-3.8-27b",
+  "currentPrivateKeyReferencePreserved": true,
+  "tests": {
+    "passed": 41,
+    "failed": 0,
+    "scope": "Local regression tests with injected responses, separate from actual model calls."
+  },
+  "local": {
+    "name": "daymark",
+    "ok": true,
+    "model": "qwen-3.8-27b",
+    "usage": {
+      "inputTokens": 684,
+      "outputTokens": 189,
+      "cacheReadTokens": 0
+    },
+    "elapsedMs": 597
+  },
+  "previousLocalAttempts": [],
+  "publicVerification": {
+    "name": "daymark",
+    "ok": true,
+    "roles": [
+      {
+        "role": "sales",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 684,
+          "outputTokens": 305,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "production",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 842,
+          "outputTokens": 191,
+          "cacheReadTokens": 0
+        }
+      },
+      {
+        "role": "finance",
+        "model": "qwen-3.8-27b",
+        "usage": {
+          "inputTokens": 921,
+          "outputTokens": 134,
+          "cacheReadTokens": 0
+        }
+      }
+    ],
+    "decision": "completed synthetic day",
+    "ownerDecisionsSubmitted": 0,
+    "elapsedMs": 8438
+  },
+  "deployment": {
+    "name": "daymark",
+    "project_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4",
+    "version_id": "appgprj_6ad5c49b47e88191b265d1da6aa1fdb4~appgver_3c2e4623b34c81919df7d4f0086f80af",
+    "deployment_id": "appgdep_6aec282229cc81918d146e3e29baffbe",
+    "status": "succeeded",
+    "url": "https://daymark-print-studio.choggyacc.chatgpt.site",
+    "commit_sha": "09edb33a8404bfdbe98e9641050062fe86383d17"
+  }
+}

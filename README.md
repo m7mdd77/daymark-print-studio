@@ -1,4 +1,4 @@
-Current runtime: **GPT-OSS 120B through Cerebras**, using the operator's newly selected private key. See [current verification and setup](docs/gpt-oss-migration.md). Earlier Qwen, Sol, Astra and DeepSeek evidence remains dated history.
+Current runtime: **Qwen 3.8 27B through Cerebras**, selected on 5 November 2026 with the current private key. See [current setup and verification](docs/qwen-nov5-migration.md). Earlier model records and recordings remain dated history.
 
 # Daymark — the studio runs together
 
